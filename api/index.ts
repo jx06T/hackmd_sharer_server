@@ -5,10 +5,12 @@ const cors = require("cors")
 const app = express();
 const port = process.env.PORT || 3000;
 
-function share(key: string, content: string){
+function share(key: string, content: string,writePermission = "owner"){
     let data = JSON.stringify({
         "content": content,
-        "commentPermission": "everyone"
+        "commentPermission": "everyone",
+        "readPermission": "guest",
+        "writePermission":writePermission
     });
     let config = {
         method: 'post',
@@ -27,12 +29,12 @@ function share(key: string, content: string){
 function share0(req, res) {
     const {authorization} = req.headers;
     const key = authorization
-    const { content } = req.body;
+    const { content ,writePermission} = req.body;
 
     // console.log(req.headers)
     // console.log(key, content)
 
-    share(key, content)
+    share(key, content,writePermission)
         .then((response) => {
             const r = JSON.stringify(response.data)
             console.log(r);
@@ -46,9 +48,9 @@ function share0(req, res) {
 
 //------------------------------------------------------------------------
 
-app.use(cors());
+// app.use(cors());
 // 允許來自 Obsidian 的跨域請求
-// app.use(cors({origin: 'app://obsidian.md'}));
+app.use(cors({origin: 'app://obsidian.md'}));
 
 app.use(express.json());
 
