@@ -1,6 +1,6 @@
 const express = require("express");
 const axios = require('axios');
-// const cors = require("cors")
+const cors = require("cors")
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -46,8 +46,9 @@ function share0(req, res) {
 
 //------------------------------------------------------------------------
 
-// app.use(cors({ origin: 'https://jx06blog-jx06ts-projects.vercel.app' }));
-// app.use(cors({origin: 'http://localhost:4321'}));
+app.use(cors());
+// 允許來自 Obsidian 的跨域請求
+// app.use(cors({origin: 'app://obsidian.md'}));
 
 app.use(express.json());
 
